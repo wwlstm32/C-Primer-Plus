@@ -1,0 +1,107 @@
+#include <stdio.h>
+
+
+#define EXTRA_HOUR  1.5
+#define BASE_TAX    0.15
+#define EXTRA_TAX   0.2
+#define EXCEED_TAX  0.25
+
+void show_menu(void)
+{
+    char s1[] = "1) $8.75/hr";
+    char s2[] = "2) $9.33/hr";
+    char s3[] = "3) $10.00/hr";
+    char s4[] = "4) $11.20/hr";
+    char s5[] = "5) quit";
+
+    printf("********************************************************************************\n");
+    printf("%-40s",s1);
+    printf("%-40s\n",s2);
+    printf("%-40s",s3);
+    printf("%-40s\n",s4);
+    printf("%-40s\n",s5);
+    printf("********************************************************************************\n");
+}
+
+void calc_salary(float base_salary , float hours)
+{
+    float  taxed_salary = 0;//净收入
+    float salary = 0 ;//工资总额
+    float tax = 0 ;//税金
+
+
+    if(hours <= 30)
+    {
+        salary = hours * base_salary ;
+
+        tax = salary * 0.15 ;
+
+        taxed_salary = salary - tax ;
+
+    }
+    else if(hours <= 40)
+    {
+        salary = hours * base_salary ;
+         
+         tax = 300 * 0.15 + (salary - 300) * EXTRA_TAX ;
+
+         taxed_salary = salary - tax ;
+    }
+    else
+    {
+        salary = 40 * base_salary + (hours - 40 ) * EXTRA_HOUR * base_salary ;
+
+        if(salary > 450)
+            tax = 300 * BASE_TAX + 150 * EXTRA_TAX + ( salary - 450 ) * EXCEED_TAX ;
+        else
+            tax = 300 * BASE_TAX + (salary - 300) * EXTRA_TAX ;
+
+        taxed_salary = salary - tax ;    
+    }
+
+    printf("salary = %.2f \t tax = %.2f \t taxed_salary = %.2f.\n",salary,tax,taxed_salary);
+
+}
+int main()
+{
+    char selected ;
+    float hours  = 0 ;
+    do
+    {
+        show_menu(); 
+        scanf("%c",&selected);
+        switch(selected)
+        {
+            case '1':
+                    printf("you select $8.75/hr. Enter the work hours:");
+                    scanf("%f",&hours);
+                    calc_salary(8.75 , hours );
+                    break;
+             case '2':
+                    printf("you select $9.33/hr. Enter the work hours:");
+                    scanf("%f",&hours);
+                    calc_salary(9.33 , hours );
+                    break;
+            case '3':
+                    printf("you select $10.00/hr. Enter the work hours:");
+                    scanf("%f",&hours);
+                    calc_salary(10.00 , hours );
+                    break;
+            case '4':
+                    printf("you select $11.20/hr. Enter the work hours:");
+                    scanf("%f",&hours);
+                    calc_salary(11.20 , hours );
+                    break;
+            case '5':
+                    break;
+            default:
+                    printf("Error selected! please enter 1 to 5\n");
+                    getchar();
+                    break;
+
+        }
+    }while(selected != '5');
+
+    return 0;
+                           
+}
